@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <meta charset="utf-8" />
+  <title>Snake avec Flask — Accueil</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #eee;
+      font-family: system-ui, sans-serif;
+    }
+    nav {
+      background: #222;
+      padding: 10px;
+      position: sticky;
+      top: 0;
+    }
+    nav a {
+      color: #eee;
+      text-decoration: none;
+      margin-right: 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: skyblue;
+    }
+    #ui {
+      position: fixed;
+      top: 58px;
+      left: 16px;
+    }
+    canvas {
+      display: block;
+      margin: 40px auto;
+      background: lightblue;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+    button {
+      margin-left: 8px;
+    }
+  </style>
+
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/page2">Deuxième page</a>
+  </nav>
+
+  <div id="ui">
+    Score: <span id="score">0</span>
+    <button id="restart">Recommencer</button>
+  </div>
+
+  <canvas id="game" width="600" height="400"></canvas>
+
+  <script>
+    const c = document.getElementById("game"),
+      ctx = c.getContext("2d");
+    const grid = 20;
+    let snake, dir, food, score, running, timer;
+
+    function reset() {
+      snake = [{ x: grid * 5, y: grid * 5 }];
+      dir = { x: grid, y: 0 };
+      score = 0;
+      document.getElementById("score").textContent = score;
+      spawnFood();
+      running = true;
+      if (timer) cancelAnimationFrame(timer);
+      loop();
+    }
+
+    function spawnFood() {
+      food = {
+        x: Math.floor(Math.random() * (c.width / grid)) * grid,
+        y: Math.floor(Math.random() * (c.height / grid)) * grid,
+      };
+    }
+
+    function loop(ts) {
+      timer = requestAnimationFrame(loop);
+      if (!loop.last || ts - loop.last > 80) {
+        loop.last = ts;
+        step();
+        draw();
+      }
+    }
+
+    function step() {
+      if (!running) return;
+      const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+      head.x = (head.x + c.width) % c.width;
+      head.y = (head.y + c.height) % c.height;
+
+      if (snake.some((s, i) => i && s.x === head.x && s.y === head.y)) {
+        running = false;
+        return;
+      }
+
+      snake.unshift(head);
+      if (head.x === food.x && head.y === food.y) {
+        score++;
+        document.getElementById("score").textContent = score;
+        spawnFood();
+      } else {
+        snake.pop();
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      // food
+      ctx.fillStyle = "#e74c3c";
+      ctx.fillRect(food.x, food.y, grid, grid);
+      // snake
+      ctx.fillStyle = "#2ecc71";
+      snake.forEach((s) => ctx.fillRect(s.x, s.y, grid - 1, grid - 1));
+      // overlay si game over
+      if (!running) {
+        ctx.fillStyle = "rgba(135,206,250,.5)"; // bleu clair semi-transparent
+        ctx.fillRect(0, 0, c.width, c.height);
+        ctx.fillStyle = "#fff";
+        ctx.textAlign = "center";
+        ctx.font = "bold 24px system-ui";
+        ctx.fillText("Game Over — R pour relancer", c.width / 2, c.height / 2);
+      }
+    }
+
+    addEventListener("keydown", (e) => {
+      const k = e.key.toLowerCase();
+      const isHor = dir.x !== 0;
+      if ((k === "arrowup" || k === "w") && isHor) dir = { x: 0, y: -grid };
+      if ((k === "arrowdown" || k === "s") && isHor) dir = { x: 0, y: grid };
+      const isVer = dir.y !== 0;
+      if ((k === "arrowleft" || k === "a") && isVer) dir = { x: -grid, y: 0 };
+      if ((k === "arrowright" || k === "d") && isVer) dir = { x: grid, y: 0 };
+      if (k === "r") reset();
+    });
+
+    document.getElementById("restart").onclick = reset;
+    reset();
+  </script>
+</html>
