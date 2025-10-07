@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: projet2025
+  namespace: dev
+  annotations:
+    # Laisser la classe vide si vous utilisez controller.watchIngressWithoutClass=true
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: projet.localtest.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: projet2025
+                port:
+                  number: 80
