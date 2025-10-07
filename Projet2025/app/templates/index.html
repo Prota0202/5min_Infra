@@ -43,11 +43,13 @@
   <nav>
     <a href="/">Accueil</a>
     <a href="/page2">Deuxième page</a>
+    <a href="/scores">Scores</a>
   </nav>
 
   <div id="ui">
     Score: <span id="score">0</span>
     <button id="restart">Recommencer</button>
+    <span id="joueur"></span>
   </div>
 
   <canvas id="game" width="600" height="400"></canvas>
@@ -60,7 +62,7 @@
         const j = await r.json();
         document.getElementById(
           "whoami"
-        ).textContent = Served by pod: ${j.pod};
+        ).textContent = "Served by pod: " + j.pod;
       } catch (e) {
         document.getElementById("whoami").textContent = "Pod: (unknown)";
       }
@@ -68,6 +70,22 @@
   </script>
 
   <script>
+    // Fonction pour demander le nom du joueur à CHAQUE partie (jamais "Anonyme" par défaut)
+    function askUsername() {
+      let input = "";
+      while (!input) {
+        input = prompt("Quel est ton nom de joueur ?") || 'Abdelbadi';
+        // Si l'utilisateur annule ou laisse vide, ça redemande
+      }
+      username = input;
+      localStorage.setItem("username", username);
+      document.getElementById("joueur").textContent = "Joueur: " + username;
+    }
+
+    // Initialisation nom joueur
+    let username = "";
+    askUsername();
+
     const c = document.getElementById("game"),
       ctx = c.getContext("2d");
     const grid = 20;
@@ -104,11 +122,9 @@
       if (!running) return;
       const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
-      head.x = (head.x + c.width) % c.width;
-      head.y = (head.y + c.height) % c.height;
-
+      // Game Over: collision sur soi
       if (snake.some((s, i) => i && s.x === head.x && s.y === head.y)) {
-        running = false;
+        gameOver();
         return;
       }
 
@@ -120,6 +136,10 @@
       } else {
         snake.pop();
       }
+
+      // Bord de l'écran (option: wrap)
+      head.x = (head.x + c.width) % c.width;
+      head.y = (head.y + c.height) % c.height;
     }
 
     function draw() {
@@ -139,6 +159,19 @@
         ctx.font = "bold 24px system-ui";
         ctx.fillText("Game Over — R pour relancer", c.width / 2, c.height / 2);
       }
+    }
+
+    function gameOver() {
+      running = false;
+      askUsername(); // Demande le pseudo à chaque game over
+      fetch("/api/score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom: username,
+          score: score
+        })
+      });
     }
 
     addEventListener("keydown", (e) => {

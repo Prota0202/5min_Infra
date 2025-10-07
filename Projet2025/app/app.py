@@ -1,37 +1,43 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import os
-from pymongo import MongoClient  # Ajoute cet import
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
 POD = os.getenv("HOSTNAME", "unknown")
 
+# Connexion à MongoDB ReplicaSet (adapte l'URI si besoin)
+client = MongoClient("mongodb://mongodb.dev.svc.cluster.local:27017/?replicaSet=rs0")
+db = client["projet2025"]
+collection = db["scores"]
+
 @app.get("/whoami")
 def whoami():
     return jsonify(pod=POD)
 
-# Connexion à MongoDB via Docker Compose
-client = MongoClient("mongodb://mongodb:27017/")
-db = client["projet2025"]            
-collection = db["scores"]        
-
 @app.route("/")
 def home():
-    # Exemple d'insertion d'un score
-    collection.insert_one({"nom": "Prota0202", "score": 300})
     return render_template("index.html")
-
-@app.route("/page2")
-def page2():
-    return render_template("page2.html")
 
 @app.route("/scores")
 def scores():
-    # Récupérer tous les scores depuis MongoDB
     all_scores = collection.find()
     scores_list = [{"nom": score.get("nom", ""), "score": score.get("score", "")} for score in all_scores]
     return render_template("scores.html", scores=scores_list)
 
+@app.route("/api/score", methods=["POST"])
+def api_score():
+    data = request.get_json()
+    nom = data.get("nom")
+    score = data.get("score")
+    if nom and score is not None:
+        collection.update_one(
+            {"nom": nom},
+            {"$set": {"score": score}},
+            upsert=True
+        )
+        return jsonify({"ok": True})
+    return jsonify({"ok": False, "error": "Missing nom or score"}), 400
+
 if __name__ == "__main__":
     app.run(debug=True)
-    
