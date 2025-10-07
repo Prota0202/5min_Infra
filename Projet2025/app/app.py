@@ -18,7 +18,7 @@ collection = db["scores"]
 @app.route("/")
 def home():
     # Exemple d'insertion d'un score
-    collection.insert_one({"nom": "Prota0202", "score": 100})
+    collection.insert_one({"nom": "Prota0202", "score": 300})
     return render_template("index.html")
 
 @app.route("/page2")
