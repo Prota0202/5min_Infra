@@ -1,23 +1,31 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 import os
 from pymongo import MongoClient
 
 app = Flask(__name__)
+app.secret_key = "9c1e2b7ab7631f7a84b9e1a5f48c6d3e2f6d4c3b2a1f8e9d1c0b9a8e7f6d5c4b"  # Mets ta propre clé secrète !
 
 POD = os.getenv("HOSTNAME", "unknown")
 
-# Connexion à MongoDB ReplicaSet (adapte l'URI si besoin)
 client = MongoClient("mongodb://mongodb.dev.svc.cluster.local:27017/?replicaSet=rs0")
 db = client["projet2025"]
 collection = db["scores"]
 
-@app.get("/whoami")
-def whoami():
-    return jsonify(pod=POD)
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        pseudo = request.form.get("pseudo", "").strip()
+        if pseudo:
+            session["username"] = pseudo
+            return redirect(url_for("home"))
+    return render_template("login.html")
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    username = session.get("username")
+    if not username:
+        return redirect(url_for("login"))
+    return render_template("index.html", username=username)
 
 @app.route("/scores")
 def scores():
@@ -38,6 +46,10 @@ def api_score():
         )
         return jsonify({"ok": True})
     return jsonify({"ok": False, "error": "Missing nom or score"}), 400
+
+@app.get("/whoami")
+def whoami():
+    return jsonify(pod=POD)
 
 if __name__ == "__main__":
     app.run(debug=True)
