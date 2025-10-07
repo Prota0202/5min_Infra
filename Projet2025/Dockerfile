@@ -17,7 +17,7 @@ COPY app/app.py /app/app.py
 COPY app/templates /app/templates
 
 # Installer Flask et Gunicorn
-RUN pip install --no-cache-dir flask gunicorn
+RUN pip install --no-cache-dir flask gunicorn pymongo
 
 EXPOSE 8000
 

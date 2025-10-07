@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scores des utilisateurs</title>
+</head>
+<body>
+    <h1>Scores</h1>
+    <ul>
+    {% for score in scores %}
+        <li>{{ score.nom }} : {{ score.score }}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
