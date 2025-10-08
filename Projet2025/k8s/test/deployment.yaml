@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: projet2025
-          image: __IMAGE__
+          image: projet2025:test
           imagePullPolicy: IfNotPresent
           ports: [{ containerPort: 8000 }]
           readinessProbe:
