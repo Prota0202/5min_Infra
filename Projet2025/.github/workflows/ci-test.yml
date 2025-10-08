@@ -2,7 +2,7 @@ name: CI → Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch: {}
 
 env:
@@ -10,18 +10,20 @@ env:
 
 jobs:
   test:
-    runs-on: self-hosted      # ton runner local
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+
+      - name: Show Python
+        run: python3 --version
+
       - name: Install deps for tests
         run: |
-          python -m pip install --upgrade pip
-          pip install flask pytest
+          python3 -m pip install --upgrade pip
+          python3 -m pip install flask pytest
+
       - name: Run unit tests
-        run: pytest -q
+        run: python3 -m pytest -q
 
   build_and_push:
     runs-on: self-hosted
@@ -48,7 +50,6 @@ jobs:
           kubectl get ns test >/dev/null 2>&1 || kubectl create namespace test
           kubectl -n test apply -f k8s/test/service.yaml
           kubectl -n test apply -f k8s/test/ingress.yaml
-          # créer le Deployment s'il n'existe pas encore (avec l'image courante)
           if ! kubectl -n test get deploy projet2025 >/dev/null 2>&1; then
             sed "s|__IMAGE__|${IMAGE}|g" k8s/test/deployment.yaml | kubectl -n test apply -f -
           fi
