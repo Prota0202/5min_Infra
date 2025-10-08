@@ -2,8 +2,11 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  IMAGE: docker.io/${{ secrets.DOCKER_USERNAME }}/projet2025:${{ github.sha }}
 
 jobs:
   test-build-deploy:
@@ -13,65 +16,72 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Python pour les tests
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
+          cache: "pip"
 
-      - name: Install dependencies
+      - name: Install dependencies (tests)
         run: |
-          pip install -r app/requirements.txt
+          python -m pip install -U pip
+          python -m pip install -r app/requirements.txt
 
       - name: Run unit tests
         run: |
-          pytest tests/
+          pytest -q tests/
 
-      - name: Build Docker image
-        run: |
-          docker build -t samirbch/mini-store:v${{ github.sha }} .
-
-      - name: Log in to DockerHub
-        uses: docker/login-action@v2
+      # Build & push Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push Docker image
-        run: |
-          docker push samirbch/mini-store:v${{ github.sha }}
+      - name: Build image
+        run: docker build -t "$IMAGE" .
 
-      # 🧩 Vérification des secrets
-      - name: Check secrets presence
+      - name: Push image
+        run: docker push "$IMAGE"
+
+      # Vérif des secrets déploiement
+      - name: Check KUBE_CONFIG
+        id: checkkube
         run: |
-          if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
-            echo "❌ DOCKER_USERNAME secret missing"
-            exit 1
-          fi
-          if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
-            echo "❌ DOCKER_PASSWORD secret missing"
-            exit 1
-          fi
           if [ -z "${{ secrets.KUBE_CONFIG }}" ]; then
-            echo "⚠️ KUBE_CONFIG secret missing (ok si cluster local)"
-            echo "HAS_KUBE_CONFIG=false" >> $GITHUB_ENV
+            echo "HAS_KUBE=false" >> $GITHUB_ENV
+            echo "ℹ️  KUBE_CONFIG absent : déploiement ignoré (OK si cluster local)."
           else
-            echo "✅ KUBE_CONFIG secret found"
-            echo "HAS_KUBE_CONFIG=true" >> $GITHUB_ENV
+            echo "HAS_KUBE=true" >> $GITHUB_ENV
           fi
 
-      # 🧩 Configuration du kubeconfig (connexion cluster)
-      - name: Set up Kubeconfig
-        if: env.HAS_KUBE_CONFIG == 'true'
+      # Kubeconfig (si cluster distant)
+      - name: Set up kubeconfig
+        if: env.HAS_KUBE == 'true'
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
+          kubectl config current-context
+          kubectl get nodes || true
 
-      # 🚀 Déploiement automatique dans le namespace test
-      - name: Deploy to Kubernetes test
-        if: env.HAS_KUBE_CONFIG == 'true'
+      # Déploiement en namespace test (ressources de base + rollout)
+      - name: Apply base resources (test)
+        if: env.HAS_KUBE == 'true'
         run: |
-          echo "🔄 Mise à jour du déploiement mini-store dans le namespace test..."
-          kubectl set image deployment/mini-store-deployment mini-store=samirbch/mini-store:v${{ github.sha }} -n test
-          kubectl rollout status deployment/mini-store-deployment -n test
-          echo "✅ Déploiement terminé avec succès dans le namespace test !"
+          kubectl get ns test >/dev/null 2>&1 || kubectl create namespace test
+          # Applique service/ingress si tu les as dans le repo
+          if [ -f k8s/test/service.yaml ]; then kubectl -n test apply -f k8s/test/service.yaml; fi
+          if [ -f k8s/test/ingress.yaml ]; then kubectl -n test apply -f k8s/test/ingress.yaml; fi
+          # Crée le Deployment s’il n’existe pas encore (remplace __IMAGE__)
+          if [ -f k8s/test/deployment.yaml ] && ! kubectl -n test get deploy projet2025 >/dev/null 2>&1; then
+            sed "s|__IMAGE__|${IMAGE}|g" k8s/test/deployment.yaml | kubectl -n test apply -f -
+          fi
+
+      - name: Rollout to test
+        if: env.HAS_KUBE == 'true'
+        run: |
+          kubectl -n test set image deployment/projet2025 projet2025="$IMAGE" --record
+          kubectl -n test rollout status deployment/projet2025
+          kubectl -n test get deploy projet2025 -o wide
