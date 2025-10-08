@@ -14,8 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Assure que les binaires brew (python3, kubectl, docker…) sont dans le PATH
+      - name: Ensure PATH
+        run: |
+          echo "/usr/local/bin" >> "$GITHUB_PATH"
+          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
+
       - name: Show Python
-        run: python3 --version
+        run: |
+          which python3 || true
+          python3 --version
 
       - name: Install deps for tests
         run: |
@@ -33,6 +41,10 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - name: Ensure PATH
+        run: |
+          echo "/usr/local/bin" >> "$GITHUB_PATH"
+          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
       - name: Login to GHCR
         run: echo ${{ github.token }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Build image
@@ -45,6 +57,10 @@ jobs:
     needs: build_and_push
     steps:
       - uses: actions/checkout@v4
+      - name: Ensure PATH
+        run: |
+          echo "/usr/local/bin" >> "$GITHUB_PATH"
+          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
       - name: Ensure namespace + base resources
         run: |
           kubectl get ns test >/dev/null 2>&1 || kubectl create namespace test
