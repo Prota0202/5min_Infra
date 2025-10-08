@@ -2,7 +2,7 @@ name: CI → Test
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   workflow_dispatch: {}
 
 env:
@@ -10,66 +10,50 @@ env:
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: self-hosted      # ton runner local
     steps:
       - uses: actions/checkout@v4
-
-      # Assure que les binaires brew (python3, kubectl, docker…) sont dans le PATH
-      - name: Ensure PATH
-        run: |
-          echo "/usr/local/bin" >> "$GITHUB_PATH"
-          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
-
-      - name: Show Python
-        run: |
-          which python3 || true
-          python3 --version
-
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Install deps for tests
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install flask pytest
-
+          python -m pip install --upgrade pip
+          pip install flask pytest
       - name: Run unit tests
-        run: python3 -m pytest -q
+        run: pytest -q
 
-  build_and_push:
+build_and_push:
     runs-on: self-hosted
     needs: test
     permissions:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
-      - name: Ensure PATH
-        run: |
-          echo "/usr/local/bin" >> "$GITHUB_PATH"
-          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
-      - name: Login to GHCR
-        run: echo ${{ github.token }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: Build image
-        run: docker build -t "$IMAGE" .
-      - name: Push image
-        run: docker push "$IMAGE"
+      
+uses: actions/checkout@v4
+name: Login to GHCR
+run: echo ${{ github.token }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+name: Build image
+run: docker build -t "$IMAGE" .
+name: Push image
+run: docker push "$IMAGE"
 
-  deploy_test:
+deploy_test:
     runs-on: self-hosted
     needs: build_and_push
     steps:
-      - uses: actions/checkout@v4
-      - name: Ensure PATH
-        run: |
-          echo "/usr/local/bin" >> "$GITHUB_PATH"
-          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
-      - name: Ensure namespace + base resources
-        run: |
-          kubectl get ns test >/dev/null 2>&1 || kubectl create namespace test
-          kubectl -n test apply -f k8s/test/service.yaml
-          kubectl -n test apply -f k8s/test/ingress.yaml
-          if ! kubectl -n test get deploy projet2025 >/dev/null 2>&1; then
-            sed "s|__IMAGE__|${IMAGE}|g" k8s/test/deployment.yaml | kubectl -n test apply -f -
-          fi
-      - name: Rolling update to new image
-        run: |
-          kubectl -n test set image deployment/projet2025 projet2025=${IMAGE} --record
-          kubectl -n test rollout status deployment/projet2025
+      
+uses: actions/checkout@v4
+name: Ensure namespace + base resources
+run: |
+      kubectl get ns test >/dev/null 2>&1 || kubectl create namespace test
+      kubectl -n test apply -f k8s/test/service.yaml
+      kubectl -n test apply -f k8s/test/ingress.yaml# créer le Deployment s'il n'existe pas encore (avec l'image courante)
+      if ! kubectl -n test get deploy projet2025 >/dev/null 2>&1; then
+        sed "s|IMAGE|${IMAGE}|g" k8s/test/deployment.yaml | kubectl -n test apply -f -
+      fi
+name: Rolling update to new image
+run: |
+    kubectl -n test set image deployment/projet2025 projet2025=${IMAGE} --record
+    kubectl -n test rollout status deployment/projet2025
