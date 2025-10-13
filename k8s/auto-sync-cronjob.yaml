@@ -1,31 +1,30 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: auto-sync-mini-store
+  name: auto-sync-snack
   namespace: test
 spec:
   schedule: "*/5 * * * *"
   concurrencyPolicy: Forbid
-  successfulJobsHistoryLimit: 2
-  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       backoffLimit: 0
+      ttlSecondsAfterFinished: 3600
       template:
         spec:
-          serviceAccountName: image-sync
-          restartPolicy: OnFailure
+          serviceAccountName: image-sync # SA qui a les droits chez toi
+          restartPolicy: Never
           containers:
             - name: auto-sync
-              image: lachlanevenson/k8s-kubectl:v1.30.0
+              image: bitnami/kubectl:latest
               imagePullPolicy: IfNotPresent
-              command: ["/bin/sh", "-lc"]
+              command: ["/bin/sh", "-c"]
               args:
                 - |
-                  set -e
-                  apk add --no-cache curl jq >/dev/null
-                  chmod +x /scripts/check-and-update.sh
-                  /scripts/check-and-update.sh
+                  set -euo pipefail
+                  /bin/sh /scripts/check-and-update.sh
               env:
                 - name: NAMESPACE
                   value: "test"
@@ -34,14 +33,15 @@ spec:
                 - name: CONTAINER
                   value: "projet2025"
                 - name: IMAGE_REPO
-                  value: "docker.io/<TON_DOCKERHUB_USER>/projet2025"
+                  value: "docker.io/haitamleb/projet2025"
                 - name: FOLLOW_TAG
                   value: "main"
               volumeMounts:
                 - name: script
                   mountPath: /scripts
+                  readOnly: true
           volumes:
             - name: script
               configMap:
                 name: auto-sync-script
-                defaultMode: 0755
+                defaultMode: 0555
