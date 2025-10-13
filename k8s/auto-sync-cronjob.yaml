@@ -5,16 +5,15 @@ metadata:
   namespace: test
 spec:
   schedule: "*/5 * * * *"
-  concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       backoffLimit: 0
-      ttlSecondsAfterFinished: 3600
+      ttlSecondsAfterFinished: 600
       template:
         spec:
-          serviceAccountName: image-sync # SA qui a les droits chez toi
+          serviceAccountName: image-sync
           restartPolicy: Never
           containers:
             - name: auto-sync
@@ -24,7 +23,7 @@ spec:
               args:
                 - |
                   set -euo pipefail
-                  /bin/sh /scripts/check-and-update.sh
+                  /bin/sh /scripts/run.sh
               env:
                 - name: NAMESPACE
                   value: "test"
@@ -37,11 +36,10 @@ spec:
                 - name: FOLLOW_TAG
                   value: "main"
               volumeMounts:
-                - name: script
+                - name: scripts
                   mountPath: /scripts
                   readOnly: true
           volumes:
-            - name: script
+            - name: scripts
               configMap:
                 name: auto-sync-script
-                defaultMode: 0555
