@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: auto-sync-mini-store
+  namespace: test
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          serviceAccountName: image-sync
+          restartPolicy: OnFailure
+          containers:
+            - name: auto-sync
+              image: lachlanevenson/k8s-kubectl:v1.30.0
+              imagePullPolicy: IfNotPresent
+              command: ["/bin/sh", "-lc"]
+              args:
+                - |
+                  set -e
+                  apk add --no-cache curl jq >/dev/null
+                  chmod +x /scripts/check-and-update.sh
+                  /scripts/check-and-update.sh
+              env:
+                - name: NAMESPACE
+                  value: "test"
+                - name: DEPLOYMENT
+                  value: "projet2025"
+                - name: CONTAINER
+                  value: "projet2025"
+                - name: IMAGE_REPO
+                  value: "docker.io/<TON_DOCKERHUB_USER>/projet2025"
+                - name: FOLLOW_TAG
+                  value: "main"
+              volumeMounts:
+                - name: script
+                  mountPath: /scripts
+          volumes:
+            - name: script
+              configMap:
+                name: auto-sync-script
+                defaultMode: 0755

@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auto-sync-script
+  namespace: test
+data:
+  check-and-update.sh: |
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    NAMESPACE="${NAMESPACE:-test}"
+    DEPLOYMENT="${DEPLOYMENT:-projet2025}"
+    CONTAINER="${CONTAINER:-projet2025}"
+    IMAGE_REPO="${IMAGE_REPO:-docker.io/<haitamleb>/projet2025}"
+    FOLLOW_TAG="${FOLLOW_TAG:-main}"   # on suit le tag 'main' par défaut
+
+    echo "🔧 Namespace=$NAMESPACE, Deploy=$DEPLOYMENT, Container=$CONTAINER, Repo=$IMAGE_REPO, Follow=$FOLLOW_TAG"
+
+    CURRENT_IMAGE="$(kubectl -n "$NAMESPACE" get deploy "$DEPLOYMENT" -o jsonpath='{.spec.template.spec.containers[0].image}')"
+    echo "🔍 Image actuelle : $CURRENT_IMAGE"
+
+    # Tag à suivre (simple et fiable)
+    LATEST_TAG="$FOLLOW_TAG"
+
+    # ⚠️ si tu veux vraiment prendre le dernier tag créé sur DockerHub :
+    # LATEST_TAG="$(curl -fsSL "https://hub.docker.com/v2/repositories/${IMAGE_REPO#docker.io/}/tags?page_size=1&ordering=last_updated" | jq -r '.results[0].name')"
+
+    LATEST_IMAGE="${IMAGE_REPO}:${LATEST_TAG}"
+    echo "🔎 Dernière image attendue : $LATEST_IMAGE"
+
+    if [[ "$CURRENT_IMAGE" != "$LATEST_IMAGE" ]]; then
+      echo "🚀 Nouvelle version détectée → mise à jour…"
+      kubectl -n "$NAMESPACE" set image "deployment/$DEPLOYMENT" "$CONTAINER=$LATEST_IMAGE" --record
+    else
+      echo "✅ Image déjà à jour."
+    fi
