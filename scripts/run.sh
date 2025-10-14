@@ -13,3 +13,4 @@ kubectl -n "$NAMESPACE" rollout status "deployment/$DEPLOYMENT" --timeout=5m
 
 echo "✅ Terminé."
 SH
+

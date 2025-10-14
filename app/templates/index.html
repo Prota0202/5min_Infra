@@ -42,10 +42,10 @@
   </style>
 
   <nav>
-    <a href="/">Accueil</a>
+    <a href="/">AccueilTest</a>
     <a href="/page2">Deuxième page</a>
     <a href="/scores">Scores</a>
-    <a href="/login" style="float:right;">Changer de joueur</a>
+    <a href="/login" style="float: right">Changer de joueur</a>
   </nav>
 
   <div id="ui">
@@ -62,9 +62,8 @@
       try {
         const r = await fetch("/whoami", { cache: "no-store" });
         const j = await r.json();
-        document.getElementById(
-          "whoami"
-        ).textContent = "Served by pod: " + j.pod;
+        document.getElementById("whoami").textContent =
+          "Served by pod: " + j.pod;
       } catch (e) {
         document.getElementById("whoami").textContent = "Pod: (unknown)";
       }
@@ -156,8 +155,8 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nom: username,
-          score: score
-        })
+          score: score,
+        }),
       });
     }
 
