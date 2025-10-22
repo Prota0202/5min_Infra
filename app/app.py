@@ -7,7 +7,20 @@ app.secret_key = "9c1e2b7ab7631f7a84b9e1a5f48c6d3e2f6d4c3b2a1f8e9d1c0b9a8e7f6d5c
 
 POD = os.getenv("HOSTNAME", "unknown")
 
-client = MongoClient("mongodb://mongodb.dev.svc.cluster.local:27017/?replicaSet=rs0")
+#client = MongoClient("mongodb://mongodb.dev.svc.cluster.local:27017/?replicaSet=rs0")
+#client = MongoClient("mongodb://mongodb.dev.svc.cluster.local:27017/?replicaSet=rs0")
+
+#MONGO_URI = os.getenv(
+#   "MONGO_URI",
+#   "mongodb://mongodb-0.mongodb.dev.svc.cluster.local:27017,"
+#   "mongodb-1.mongodb.dev.svc.cluster.local:27017,"
+#   "mongodb-2.mongodb.dev.svc.cluster.local:27017"
+#   "/?replicaSet=rs0"
+#)
+MONGO_URI = "mongodb://mongodb:27017/?replicaSet=rs0&readPreference=primary"
+
+
+client = MongoClient(MONGO_URI)
 db = client["projet2025"]
 collection = db["scores"]
 
@@ -52,4 +65,5 @@ def whoami():
     return jsonify(pod=POD)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
