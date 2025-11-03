@@ -72,9 +72,11 @@ def api_score():
             {"$set": {"score": score}},
             upsert=True
         )
-        # Mise à jour du cache Redis 
-        redis_client.set(nom, score) 
-        return jsonify({"ok": True})
+       # Mise à jour du cache Redis immédiatement 
+        redis_client.set(nom, score) # Pas de TTL, écriture immédiate 
+        # Retourner le score mis à jour depuis Redis pour confirmation 
+        cached_score = redis_client.get(nom) 
+        return jsonify({"ok": True, "score": int(cached_score)})
     return jsonify({"ok": False, "error": "Missing nom or score"}), 400
 
 @app.get("/whoami")
