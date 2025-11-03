@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 import os
 from pymongo import MongoClient
+import redis
+import json
+
 
 app = Flask(__name__)
 app.secret_key = "9c1e2b7ab7631f7a84b9e1a5f48c6d3e2f6d4c3b2a1f8e9d1c0b9a8e7f6d5c4b"  # Mets ta propre clé secrète !
@@ -24,6 +27,9 @@ client = MongoClient(MONGO_URI)
 db = client["projet2025"]
 collection = db["scores"]
 
+# Redis cache
+redis_client = redis.Redis(host="redis.test.svc.cluster.local", port=6379, db=0)
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -42,8 +48,17 @@ def home():
 
 @app.route("/scores")
 def scores():
-    all_scores = collection.find()
-    scores_list = [{"nom": score.get("nom", ""), "score": score.get("score", "")} for score in all_scores]
+    # Vérifier si les scores sont dans le cache Redis
+    cached_scores = redis_client.get("scores")
+    if cached_scores:
+        # Charger depuis le cache
+        scores_list = json.loads(cached_scores)
+    else:
+        # Charger depuis MongoDB et mettre à jour le cache
+        all_scores = collection.find()
+        scores_list = [{"nom": score.get("nom", ""), "score": score.get("score", "")} for score in all_scores]
+        redis_client.setex("scores", 60, json.dumps(scores_list))  # cache 60 secondes
+
     return render_template("scores.html", scores=scores_list)
 
 @app.route("/api/score", methods=["POST"])
@@ -66,4 +81,4 @@ def whoami():
 
 if __name__ == "__main__":
     #app.run(debug=True)
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
