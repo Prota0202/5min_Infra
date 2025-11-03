@@ -23,3 +23,6 @@ EXPOSE 8000
 
 # Lancer via Gunicorn
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "-w", "2", "app:app"]
+
+RUN pip install redis
+
