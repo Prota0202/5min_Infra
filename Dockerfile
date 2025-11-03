@@ -17,12 +17,11 @@ COPY app/app.py /app/app.py
 COPY app/templates /app/templates
 
 # Installer Flask et Gunicorn
-RUN pip install --no-cache-dir flask gunicorn pymongo
+RUN pip install --no-cache-dir flask gunicorn pymongo redis
 
 EXPOSE 8000
 
 # Lancer via Gunicorn
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "-w", "2", "app:app"]
 
-RUN pip install redis
 
