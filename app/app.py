@@ -29,7 +29,6 @@ collection = db["scores"]
 
 # Redis cache
 redis_client = redis.Redis(host="redis.test.svc.cluster.local", port=6379, db=0)
-r = redis.Redis(host="redis.test.svc.cluster.local", port=6379, db=0)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -74,7 +73,7 @@ def api_score():
             upsert=True
         )
         # Mise à jour du cache Redis 
-        r.set(nom, score) 
+        redis_client.set(nom, score) 
         return jsonify({"ok": True})
     return jsonify({"ok": False, "error": "Missing nom or score"}), 400
 
