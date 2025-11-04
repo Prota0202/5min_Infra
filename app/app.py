@@ -3,6 +3,7 @@ import os
 from pymongo import MongoClient
 import redis
 import json
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -71,10 +72,13 @@ def api_score():
     score = data.get("score")
     
     if nom and score is not None:
+        # Ajouter la date actuelle
+        current_date = datetime.utcnow().isoformat()
+
         # 1️⃣ Mise à jour MongoDB
         collection.update_one(
             {"nom": nom},
-            {"$set": {"score": score}},
+            {"$set": {"score": score, "date": current_date}},
             upsert=True
         )
 
