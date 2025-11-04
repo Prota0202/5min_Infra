@@ -79,7 +79,9 @@ def api_score():
         # 1️⃣ Mise à jour MongoDB
         collection.update_one(
             {"nom": nom},
-            {"$set": {"score": score, "date": current_date}},
+            {"$set": {"score": score},
+             "$setOnInsert": {"date": current_date}  # Ajouter la date uniquement si le document est nouveau
+            },
             upsert=True
         )
 
