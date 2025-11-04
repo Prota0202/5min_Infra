@@ -80,7 +80,7 @@ def api_score():
 
         # Récupérer tous les scores mis à jour
         all_scores = collection.find()
-        scores_list = [{"nom": s.get("nom", ""), "score": s.get("score", "")} for s in all_scores]
+        scores_list = [{"nom": s.get("nom", ""), "score": s.get("score", ""), "date": s.get("date", "")} for s in all_scores]
 
         # 3️⃣ Mettre à jour le cache global "scores"
         redis_client.setex("scores", 60, json.dumps(scores_list))  # expire après 60 secondes
