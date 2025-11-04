@@ -73,7 +73,8 @@ def api_score():
     
     if nom and score is not None:
         # Ajouter la date actuelle
-        current_date = datetime.utcnow().isoformat()
+        current_date = datetime.now(datetime.timezone.utc).isoformat()
+        #current_date = datetime.utcnow().isoformat()
 
         # 1️⃣ Mise à jour MongoDB
         collection.update_one(
