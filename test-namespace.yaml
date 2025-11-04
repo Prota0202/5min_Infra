@@ -1,0 +1,2675 @@
+apiVersion: v1
+items:
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      creationTimestamp: "2025-11-03T14:00:00Z"
+      generateName: auto-sync-snack-29369640-
+      generation: 1
+      labels:
+        batch.kubernetes.io/controller-uid: 5b8d29e7-d307-43bb-936b-a47277408386
+        batch.kubernetes.io/job-name: auto-sync-snack-29369640
+        controller-uid: 5b8d29e7-d307-43bb-936b-a47277408386
+        job-name: auto-sync-snack-29369640
+      name: auto-sync-snack-29369640-rpgsc
+      namespace: prod
+      ownerReferences:
+        - apiVersion: batch/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Job
+          name: auto-sync-snack-29369640
+          uid: 5b8d29e7-d307-43bb-936b-a47277408386
+      resourceVersion: "172632"
+      uid: 3eca83ed-9b1b-4913-bc4b-734b27e10c4f
+    spec:
+      containers:
+        - args:
+            - |
+              set -euo pipefail
+              /bin/sh /scripts/run.sh
+          command:
+            - /bin/sh
+            - -c
+          env:
+            - name: NAMESPACE
+              value: prod
+            - name: DEPLOYMENT
+              value: projet2025
+          image: bitnami/kubectl:latest
+          imagePullPolicy: IfNotPresent
+          name: auto-sync
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /scripts
+              name: scripts
+              readOnly: true
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-7c4t5
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      nodeName: docker-desktop
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: image-sync
+      serviceAccountName: image-sync
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: auto-sync-script
+          name: scripts
+        - name: kube-api-access-7c4t5
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+    status:
+      conditions:
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:30Z"
+          observedGeneration: 1
+          status: "False"
+          type: PodReadyToStartContainers
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:00Z"
+          observedGeneration: 1
+          reason: PodCompleted
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:28Z"
+          observedGeneration: 1
+          reason: PodCompleted
+          status: "False"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:28Z"
+          observedGeneration: 1
+          reason: PodCompleted
+          status: "False"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:00Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodScheduled
+      containerStatuses:
+        - containerID: docker://7ee49aea42fd0fb19d60e8ccee52893432480f1170a4f52f43f47f63488e3fb3
+          image: bitnami/kubectl:latest
+          imageID: docker-pullable://bitnami/kubectl@sha256:ef12c5016600f2d54ba86bdba0fbe2097b7b80b4236ff6a461f83fe94a46343c
+          lastState: {}
+          name: auto-sync
+          ready: false
+          resources: {}
+          restartCount: 0
+          started: false
+          state:
+            terminated:
+              containerID: docker://7ee49aea42fd0fb19d60e8ccee52893432480f1170a4f52f43f47f63488e3fb3
+              exitCode: 0
+              finishedAt: "2025-11-03T14:00:27Z"
+              reason: Completed
+              startedAt: "2025-11-03T14:00:00Z"
+          volumeMounts:
+            - mountPath: /scripts
+              name: scripts
+              readOnly: true
+              recursiveReadOnly: Disabled
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-7c4t5
+              readOnly: true
+              recursiveReadOnly: Disabled
+      hostIP: 192.168.65.3
+      hostIPs:
+        - ip: 192.168.65.3
+      observedGeneration: 1
+      phase: Succeeded
+      podIP: 10.1.4.32
+      podIPs:
+        - ip: 10.1.4.32
+      qosClass: BestEffort
+      startTime: "2025-11-03T14:00:00Z"
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      creationTimestamp: "2025-11-03T12:17:02Z"
+      generateName: mongodb-
+      generation: 1
+      labels:
+        app: mongodb
+        apps.kubernetes.io/pod-index: "0"
+        controller-revision-hash: mongodb-ff68c9444
+        statefulset.kubernetes.io/pod-name: mongodb-0
+      name: mongodb-0
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: StatefulSet
+          name: mongodb
+          uid: 6ddc4ae8-8230-40a7-90f5-aa50261ae63e
+      resourceVersion: "160538"
+      uid: a926ade7-34b2-4ee3-9ebb-8249713892ef
+    spec:
+      containers:
+        - command:
+            - mongod
+            - --replSet
+            - rs0
+            - --bind_ip_all
+          image: mongo:6.0
+          imagePullPolicy: IfNotPresent
+          name: mongodb
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-persistent-storage
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-z5jzw
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      hostname: mongodb-0
+      nodeName: docker-desktop
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      subdomain: mongodb
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-persistent-storage-mongodb-0
+        - name: kube-api-access-z5jzw
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+    status:
+      conditions:
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:03Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodReadyToStartContainers
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:02Z"
+          observedGeneration: 1
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:03Z"
+          observedGeneration: 1
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:03Z"
+          observedGeneration: 1
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:02Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodScheduled
+      containerStatuses:
+        - containerID: docker://c02621b7653311a24081e7a60d028b0659aaec44bb46fc0ec5daea7193a43996
+          image: mongo:6.0
+          imageID: docker-pullable://mongo@sha256:0a83b2f824b29c94c5284a49b018db2e3166d9879d1edda5cce545d899ef2bbb
+          lastState: {}
+          name: mongodb
+          ready: true
+          resources: {}
+          restartCount: 0
+          started: true
+          state:
+            running:
+              startedAt: "2025-11-03T12:17:02Z"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-persistent-storage
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-z5jzw
+              readOnly: true
+              recursiveReadOnly: Disabled
+      hostIP: 192.168.65.3
+      hostIPs:
+        - ip: 192.168.65.3
+      observedGeneration: 1
+      phase: Running
+      podIP: 10.1.3.212
+      podIPs:
+        - ip: 10.1.3.212
+      qosClass: BestEffort
+      startTime: "2025-11-03T12:17:02Z"
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      creationTimestamp: "2025-11-03T12:17:03Z"
+      generateName: mongodb-
+      generation: 1
+      labels:
+        app: mongodb
+        apps.kubernetes.io/pod-index: "1"
+        controller-revision-hash: mongodb-ff68c9444
+        statefulset.kubernetes.io/pod-name: mongodb-1
+      name: mongodb-1
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: StatefulSet
+          name: mongodb
+          uid: 6ddc4ae8-8230-40a7-90f5-aa50261ae63e
+      resourceVersion: "160569"
+      uid: 646734e8-312c-461a-bf6b-a5cb84689bd3
+    spec:
+      containers:
+        - command:
+            - mongod
+            - --replSet
+            - rs0
+            - --bind_ip_all
+          image: mongo:6.0
+          imagePullPolicy: IfNotPresent
+          name: mongodb
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-persistent-storage
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-nv4wh
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      hostname: mongodb-1
+      nodeName: docker-desktop
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      subdomain: mongodb
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-persistent-storage-mongodb-1
+        - name: kube-api-access-nv4wh
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+    status:
+      conditions:
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:04Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodReadyToStartContainers
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:03Z"
+          observedGeneration: 1
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:04Z"
+          observedGeneration: 1
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:04Z"
+          observedGeneration: 1
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:03Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodScheduled
+      containerStatuses:
+        - containerID: docker://2f42dd6fbaca5a2f60acaea3625b74b6a8ca0fc7a2d574eb236789bbd4b49740
+          image: mongo:6.0
+          imageID: docker-pullable://mongo@sha256:0a83b2f824b29c94c5284a49b018db2e3166d9879d1edda5cce545d899ef2bbb
+          lastState: {}
+          name: mongodb
+          ready: true
+          resources: {}
+          restartCount: 0
+          started: true
+          state:
+            running:
+              startedAt: "2025-11-03T12:17:04Z"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-persistent-storage
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-nv4wh
+              readOnly: true
+              recursiveReadOnly: Disabled
+      hostIP: 192.168.65.3
+      hostIPs:
+        - ip: 192.168.65.3
+      observedGeneration: 1
+      phase: Running
+      podIP: 10.1.3.213
+      podIPs:
+        - ip: 10.1.3.213
+      qosClass: BestEffort
+      startTime: "2025-11-03T12:17:03Z"
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      creationTimestamp: "2025-11-03T12:17:04Z"
+      generateName: mongodb-
+      generation: 1
+      labels:
+        app: mongodb
+        apps.kubernetes.io/pod-index: "2"
+        controller-revision-hash: mongodb-ff68c9444
+        statefulset.kubernetes.io/pod-name: mongodb-2
+      name: mongodb-2
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: StatefulSet
+          name: mongodb
+          uid: 6ddc4ae8-8230-40a7-90f5-aa50261ae63e
+      resourceVersion: "160599"
+      uid: 5701001a-ebeb-4317-8f14-48ee2a9414de
+    spec:
+      containers:
+        - command:
+            - mongod
+            - --replSet
+            - rs0
+            - --bind_ip_all
+          image: mongo:6.0
+          imagePullPolicy: IfNotPresent
+          name: mongodb
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-persistent-storage
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-62qcn
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      hostname: mongodb-2
+      nodeName: docker-desktop
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      subdomain: mongodb
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-persistent-storage-mongodb-2
+        - name: kube-api-access-62qcn
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+    status:
+      conditions:
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:05Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodReadyToStartContainers
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:04Z"
+          observedGeneration: 1
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:05Z"
+          observedGeneration: 1
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:05Z"
+          observedGeneration: 1
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:17:04Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodScheduled
+      containerStatuses:
+        - containerID: docker://293464a475467375da826ce1385d31b867f14a7bf38d9cd674f1b729ccc5c041
+          image: mongo:6.0
+          imageID: docker-pullable://mongo@sha256:0a83b2f824b29c94c5284a49b018db2e3166d9879d1edda5cce545d899ef2bbb
+          lastState: {}
+          name: mongodb
+          ready: true
+          resources: {}
+          restartCount: 0
+          started: true
+          state:
+            running:
+              startedAt: "2025-11-03T12:17:05Z"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-persistent-storage
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-62qcn
+              readOnly: true
+              recursiveReadOnly: Disabled
+      hostIP: 192.168.65.3
+      hostIPs:
+        - ip: 192.168.65.3
+      observedGeneration: 1
+      phase: Running
+      podIP: 10.1.3.214
+      podIPs:
+        - ip: 10.1.3.214
+      qosClass: BestEffort
+      startTime: "2025-11-03T12:17:04Z"
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "2025-11-03T14:00:00Z"
+      creationTimestamp: "2025-11-03T14:00:09Z"
+      generateName: projet2025-7666667566-
+      generation: 1
+      labels:
+        app: projet2025
+        pod-template-hash: "7666667566"
+      name: projet2025-7666667566-mm9vt
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: ReplicaSet
+          name: projet2025-7666667566
+          uid: db92a35d-0889-47b2-bec9-6dd6ae870a93
+      resourceVersion: "172553"
+      uid: fb89e02b-ee42-4b3c-8f13-e8dd93c2f10f
+    spec:
+      containers:
+        - image: docker.io/haitamleb/projet2025:main
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: projet2025
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-m9znr
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      nodeName: docker-desktop
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+      volumes:
+        - name: kube-api-access-m9znr
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+    status:
+      conditions:
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:11Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodReadyToStartContainers
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:09Z"
+          observedGeneration: 1
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:18Z"
+          observedGeneration: 1
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:18Z"
+          observedGeneration: 1
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:09Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodScheduled
+      containerStatuses:
+        - containerID: docker://539b02de67766f5400d648301c323ddbaa41aa830724d3874e98fdbb6b983876
+          image: haitamleb/projet2025:main
+          imageID: docker-pullable://haitamleb/projet2025@sha256:be2e89922f501ec9219257a4c50b68dd94f280990921ec5917e0643e8c396a5f
+          lastState: {}
+          name: projet2025
+          ready: true
+          resources: {}
+          restartCount: 0
+          started: true
+          state:
+            running:
+              startedAt: "2025-11-03T14:00:10Z"
+          volumeMounts:
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-m9znr
+              readOnly: true
+              recursiveReadOnly: Disabled
+      hostIP: 192.168.65.3
+      hostIPs:
+        - ip: 192.168.65.3
+      observedGeneration: 1
+      phase: Running
+      podIP: 10.1.4.34
+      podIPs:
+        - ip: 10.1.4.34
+      qosClass: BestEffort
+      startTime: "2025-11-03T14:00:09Z"
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "2025-11-03T14:00:00Z"
+      creationTimestamp: "2025-11-03T14:00:00Z"
+      generateName: projet2025-7666667566-
+      generation: 1
+      labels:
+        app: projet2025
+        pod-template-hash: "7666667566"
+      name: projet2025-7666667566-mxdj7
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: ReplicaSet
+          name: projet2025-7666667566
+          uid: db92a35d-0889-47b2-bec9-6dd6ae870a93
+      resourceVersion: "172504"
+      uid: 6f3d8c9e-800f-4c1b-bb97-f41e4c4dae78
+    spec:
+      containers:
+        - image: docker.io/haitamleb/projet2025:main
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: projet2025
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-w85qw
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      nodeName: docker-desktop
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+      volumes:
+        - name: kube-api-access-w85qw
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+    status:
+      conditions:
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:03Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodReadyToStartContainers
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:00Z"
+          observedGeneration: 1
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:09Z"
+          observedGeneration: 1
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:09Z"
+          observedGeneration: 1
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:00Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodScheduled
+      containerStatuses:
+        - containerID: docker://5642b46204503700c10d5ce937b766fe2b0b67f4ed553b3fe2d72b7aad436cc1
+          image: haitamleb/projet2025:main
+          imageID: docker-pullable://haitamleb/projet2025@sha256:be2e89922f501ec9219257a4c50b68dd94f280990921ec5917e0643e8c396a5f
+          lastState: {}
+          name: projet2025
+          ready: true
+          resources: {}
+          restartCount: 0
+          started: true
+          state:
+            running:
+              startedAt: "2025-11-03T14:00:02Z"
+          volumeMounts:
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-w85qw
+              readOnly: true
+              recursiveReadOnly: Disabled
+      hostIP: 192.168.65.3
+      hostIPs:
+        - ip: 192.168.65.3
+      observedGeneration: 1
+      phase: Running
+      podIP: 10.1.4.33
+      podIPs:
+        - ip: 10.1.4.33
+      qosClass: BestEffort
+      startTime: "2025-11-03T14:00:00Z"
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "2025-11-03T14:00:00Z"
+      creationTimestamp: "2025-11-03T14:00:18Z"
+      generateName: projet2025-7666667566-
+      generation: 1
+      labels:
+        app: projet2025
+        pod-template-hash: "7666667566"
+      name: projet2025-7666667566-p2z5q
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: ReplicaSet
+          name: projet2025-7666667566
+          uid: db92a35d-0889-47b2-bec9-6dd6ae870a93
+      resourceVersion: "172602"
+      uid: 878986c6-bfaa-4812-bf8a-3909ea5537cd
+    spec:
+      containers:
+        - image: docker.io/haitamleb/projet2025:main
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: projet2025
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-t5smj
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      nodeName: docker-desktop
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+      volumes:
+        - name: kube-api-access-t5smj
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+    status:
+      conditions:
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:20Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodReadyToStartContainers
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:18Z"
+          observedGeneration: 1
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:27Z"
+          observedGeneration: 1
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:27Z"
+          observedGeneration: 1
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T14:00:18Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodScheduled
+      containerStatuses:
+        - containerID: docker://e50fd9d75f83ff4df7d93fdc2235c9995fd9393ddd0891c569a6db6eb4aeaab5
+          image: haitamleb/projet2025:main
+          imageID: docker-pullable://haitamleb/projet2025@sha256:be2e89922f501ec9219257a4c50b68dd94f280990921ec5917e0643e8c396a5f
+          lastState: {}
+          name: projet2025
+          ready: true
+          resources: {}
+          restartCount: 0
+          started: true
+          state:
+            running:
+              startedAt: "2025-11-03T14:00:20Z"
+          volumeMounts:
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-t5smj
+              readOnly: true
+              recursiveReadOnly: Disabled
+      hostIP: 192.168.65.3
+      hostIPs:
+        - ip: 192.168.65.3
+      observedGeneration: 1
+      phase: Running
+      podIP: 10.1.4.35
+      podIPs:
+        - ip: 10.1.4.35
+      qosClass: BestEffort
+      startTime: "2025-11-03T14:00:18Z"
+  - apiVersion: v1
+    kind: Pod
+    metadata:
+      creationTimestamp: "2025-11-03T12:58:00Z"
+      generateName: redis-57469d9c4d-
+      generation: 1
+      labels:
+        app: redis
+        pod-template-hash: 57469d9c4d
+      name: redis-57469d9c4d-zwhq2
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: ReplicaSet
+          name: redis-57469d9c4d
+          uid: d9cdb3f6-6a5f-4467-a5b4-0ac262eea3c4
+      resourceVersion: "165420"
+      uid: 081780ee-1f58-48f3-a9f0-3092f3bbf521
+    spec:
+      containers:
+        - image: redis:7
+          imagePullPolicy: IfNotPresent
+          name: redis
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /data
+              name: redis-data
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-p2k7d
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      nodeName: docker-desktop
+      preemptionPolicy: PreemptLowerPriority
+      priority: 0
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
+      volumes:
+        - emptyDir: {}
+          name: redis-data
+        - name: kube-api-access-p2k7d
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+    status:
+      conditions:
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:58:08Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodReadyToStartContainers
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:58:00Z"
+          observedGeneration: 1
+          status: "True"
+          type: Initialized
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:58:08Z"
+          observedGeneration: 1
+          status: "True"
+          type: Ready
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:58:08Z"
+          observedGeneration: 1
+          status: "True"
+          type: ContainersReady
+        - lastProbeTime: null
+          lastTransitionTime: "2025-11-03T12:58:00Z"
+          observedGeneration: 1
+          status: "True"
+          type: PodScheduled
+      containerStatuses:
+        - allocatedResources:
+            cpu: 50m
+            memory: 64Mi
+          containerID: docker://44d2ddfee05172fdb2a011b15ddd9fa0e105927721e960c2c289786e896456b3
+          image: redis:7
+          imageID: docker-pullable://redis@sha256:a9cc41d6d01da2aa26c219e4f99ecbeead955a7b656c1c499cce8922311b2514
+          lastState: {}
+          name: redis
+          ready: true
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          restartCount: 0
+          started: true
+          state:
+            running:
+              startedAt: "2025-11-03T12:58:07Z"
+          volumeMounts:
+            - mountPath: /data
+              name: redis-data
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-p2k7d
+              readOnly: true
+              recursiveReadOnly: Disabled
+      hostIP: 192.168.65.3
+      hostIPs:
+        - ip: 192.168.65.3
+      observedGeneration: 1
+      phase: Running
+      podIP: 10.1.3.248
+      podIPs:
+        - ip: 10.1.3.248
+      qosClass: Burstable
+      startTime: "2025-11-03T12:58:00Z"
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"mongodb","namespace":"prod"},"spec":{"clusterIP":"None","ports":[{"port":27017,"targetPort":27017}],"selector":{"app":"mongodb"}}}
+      creationTimestamp: "2025-11-03T12:16:25Z"
+      name: mongodb
+      namespace: prod
+      resourceVersion: "160453"
+      uid: f2e3b872-f92c-40d1-9853-e9c923fe01cb
+    spec:
+      clusterIP: None
+      clusterIPs:
+        - None
+      internalTrafficPolicy: Cluster
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - port: 27017
+          protocol: TCP
+          targetPort: 27017
+      selector:
+        app: mongodb
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"projet2025"},"name":"projet2025","namespace":"prod"},"spec":{"ports":[{"name":"http","port":80,"targetPort":8000}],"selector":{"app":"projet2025"}}}
+      creationTimestamp: "2025-10-08T12:27:45Z"
+      labels:
+        app: projet2025
+      name: projet2025
+      namespace: prod
+      resourceVersion: "35636"
+      uid: 32fd6c9d-f11c-454c-a62c-df3a6e92181c
+    spec:
+      clusterIP: 10.99.62.184
+      clusterIPs:
+        - 10.99.62.184
+      internalTrafficPolicy: Cluster
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: http
+          port: 80
+          protocol: TCP
+          targetPort: 8000
+      selector:
+        app: projet2025
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"redis","namespace":"prod"},"spec":{"ports":[{"port":6379,"targetPort":6379}],"selector":{"app":"redis"}}}
+      creationTimestamp: "2025-11-03T12:58:00Z"
+      name: redis
+      namespace: prod
+      resourceVersion: "165389"
+      uid: 4a037def-52b2-4a39-ba4c-4ee61134761f
+    spec:
+      clusterIP: 10.107.176.227
+      clusterIPs:
+        - 10.107.176.227
+      internalTrafficPolicy: Cluster
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - port: 6379
+          protocol: TCP
+          targetPort: 6379
+      selector:
+        app: redis
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        deployment.kubernetes.io/revision: "232"
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"projet2025"},"name":"projet2025","namespace":"prod"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"projet2025"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"projet2025"}},"spec":{"containers":[{"image":"projet2025:prod","imagePullPolicy":"IfNotPresent","livenessProbe":{"httpGet":{"path":"/","port":8000},"initialDelaySeconds":10,"periodSeconds":10},"name":"projet2025","ports":[{"containerPort":8000}],"readinessProbe":{"httpGet":{"path":"/","port":8000},"initialDelaySeconds":5,"periodSeconds":5}}]}}}}
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-10-08T12:28:02Z"
+      generation: 232
+      labels:
+        app: projet2025
+      name: projet2025
+      namespace: prod
+      resourceVersion: "172616"
+      uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 3
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: projet2025
+      strategy:
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 0
+        type: RollingUpdate
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T14:00:00Z"
+          labels:
+            app: projet2025
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      availableReplicas: 3
+      conditions:
+        - lastTransitionTime: "2025-11-03T11:38:01Z"
+          lastUpdateTime: "2025-11-03T11:38:01Z"
+          message: Deployment has minimum availability.
+          reason: MinimumReplicasAvailable
+          status: "True"
+          type: Available
+        - lastTransitionTime: "2025-11-03T11:37:36Z"
+          lastUpdateTime: "2025-11-03T14:00:27Z"
+          message: ReplicaSet "projet2025-7666667566" has successfully progressed.
+          reason: NewReplicaSetAvailable
+          status: "True"
+          type: Progressing
+      observedGeneration: 232
+      readyReplicas: 3
+      replicas: 3
+      updatedReplicas: 3
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        deployment.kubernetes.io/revision: "1"
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"redis","namespace":"prod"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"redis"}},"template":{"metadata":{"labels":{"app":"redis"}},"spec":{"containers":[{"image":"redis:7","name":"redis","ports":[{"containerPort":6379}],"resources":{"limits":{"cpu":"200m","memory":"128Mi"},"requests":{"cpu":"50m","memory":"64Mi"}},"volumeMounts":[{"mountPath":"/data","name":"redis-data"}]}],"volumes":[{"emptyDir":{},"name":"redis-data"}]}}}}
+      creationTimestamp: "2025-11-03T12:58:00Z"
+      generation: 1
+      name: redis
+      namespace: prod
+      resourceVersion: "165424"
+      uid: ea6a0b05-dd5d-4219-a567-e14156c9a6bb
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 1
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: redis
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          labels:
+            app: redis
+        spec:
+          containers:
+            - image: redis:7
+              imagePullPolicy: IfNotPresent
+              name: redis
+              ports:
+                - containerPort: 6379
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 200m
+                  memory: 128Mi
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /data
+                  name: redis-data
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - emptyDir: {}
+              name: redis-data
+    status:
+      availableReplicas: 1
+      conditions:
+        - lastTransitionTime: "2025-11-03T12:58:08Z"
+          lastUpdateTime: "2025-11-03T12:58:08Z"
+          message: Deployment has minimum availability.
+          reason: MinimumReplicasAvailable
+          status: "True"
+          type: Available
+        - lastTransitionTime: "2025-11-03T12:58:00Z"
+          lastUpdateTime: "2025-11-03T12:58:08Z"
+          message: ReplicaSet "redis-57469d9c4d" has successfully progressed.
+          reason: NewReplicaSetAvailable
+          status: "True"
+          type: Progressing
+      observedGeneration: 1
+      readyReplicas: 1
+      replicas: 1
+      updatedReplicas: 1
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "226"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:30:01Z"
+      generation: 3
+      labels:
+        app: projet2025
+        pod-template-hash: 5849f8cbd5
+      name: projet2025-5849f8cbd5
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "169554"
+      uid: cfe41f8d-4fa0-40c2-aa04-1becc85f77e7
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 5849f8cbd5
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:30:01Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 5849f8cbd5
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 3
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "224"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:20:00Z"
+      generation: 3
+      labels:
+        app: projet2025
+        pod-template-hash: 589d4c6d77
+      name: projet2025-589d4c6d77
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "168435"
+      uid: 21cedb28-69e4-4a60-b981-7d578ab930bd
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 589d4c6d77
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:20:00Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 589d4c6d77
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 3
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "227"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:35:01Z"
+      generation: 7
+      labels:
+        app: projet2025
+        pod-template-hash: 6467f89844
+      name: projet2025-6467f89844
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "170329"
+      uid: f8bd9ad6-f6dd-4e85-8be2-db15c542e166
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 6467f89844
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:35:01Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 6467f89844
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 7
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "225"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:25:01Z"
+      generation: 3
+      labels:
+        app: projet2025
+        pod-template-hash: 64c6b4c8d
+      name: projet2025-64c6b4c8d
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "168993"
+      uid: 03178a4c-3baa-4500-b44a-ff26a9a30fdf
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 64c6b4c8d
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:25:00Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 64c6b4c8d
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 3
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "229"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:45:01Z"
+      generation: 6
+      labels:
+        app: projet2025
+        pod-template-hash: 65c96988f7
+      name: projet2025-65c96988f7
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "171486"
+      uid: bea6ad8b-f15a-4731-946b-90ea80c33e16
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 65c96988f7
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:45:01Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 65c96988f7
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 6
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "223"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:15:01Z"
+      generation: 3
+      labels:
+        app: projet2025
+        pod-template-hash: 6bfb4cd666
+      name: projet2025-6bfb4cd666
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "167880"
+      uid: fbd284e5-89ad-4354-9f60-7c1576dfdec7
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 6bfb4cd666
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:15:01Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 6bfb4cd666
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 3
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "228"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:40:00Z"
+      generation: 6
+      labels:
+        app: projet2025
+        pod-template-hash: 6d4859d95
+      name: projet2025-6d4859d95
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "170891"
+      uid: 90339bdd-8835-469d-81a3-34a5a1b5f147
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 6d4859d95
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:40:00Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 6d4859d95
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 6
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "232"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T14:00:00Z"
+      generation: 3
+      labels:
+        app: projet2025
+        pod-template-hash: "7666667566"
+      name: projet2025-7666667566
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "172605"
+      uid: db92a35d-0889-47b2-bec9-6dd6ae870a93
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: "7666667566"
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T14:00:00Z"
+          labels:
+            app: projet2025
+            pod-template-hash: "7666667566"
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      availableReplicas: 3
+      fullyLabeledReplicas: 3
+      observedGeneration: 3
+      readyReplicas: 3
+      replicas: 3
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "230"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:50:00Z"
+      generation: 6
+      labels:
+        app: projet2025
+        pod-template-hash: 789cf54b48
+      name: projet2025-789cf54b48
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "172063"
+      uid: 207dfd47-7aee-4fbc-96a2-72e1161cb0d3
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 789cf54b48
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:50:00Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 789cf54b48
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 6
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "222"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:10:00Z"
+      generation: 2
+      labels:
+        app: projet2025
+        pod-template-hash: 7df4c8c9b4
+      name: projet2025-7df4c8c9b4
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "167312"
+      uid: 3bf9f1fb-d3ba-46c5-8243-c4377f06e3e7
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 7df4c8c9b4
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:10:00Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 7df4c8c9b4
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 2
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "3"
+        deployment.kubernetes.io/max-replicas: "4"
+        deployment.kubernetes.io/revision: "231"
+        kubernetes.io/change-cause:
+          kubectl set image deployment/projet2025 projet2025=docker.io/<haitamleb>/projet2025:main
+          --namespace=prod --record=true
+      creationTimestamp: "2025-11-03T13:55:00Z"
+      generation: 6
+      labels:
+        app: projet2025
+        pod-template-hash: 857c997f7
+      name: projet2025-857c997f7
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: projet2025
+          uid: 238eb127-a49b-47a0-941e-431efa45a4e4
+      resourceVersion: "172614"
+      uid: 08d00e9f-dd24-4ddc-980d-ccf59a3e834a
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: projet2025
+          pod-template-hash: 857c997f7
+      template:
+        metadata:
+          annotations:
+            kubectl.kubernetes.io/restartedAt: "2025-11-03T13:55:00Z"
+          labels:
+            app: projet2025
+            pod-template-hash: 857c997f7
+        spec:
+          containers:
+            - image: docker.io/haitamleb/projet2025:main
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: projet2025
+              ports:
+                - containerPort: 8000
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      observedGeneration: 6
+      replicas: 0
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      annotations:
+        deployment.kubernetes.io/desired-replicas: "1"
+        deployment.kubernetes.io/max-replicas: "2"
+        deployment.kubernetes.io/revision: "1"
+      creationTimestamp: "2025-11-03T12:58:00Z"
+      generation: 1
+      labels:
+        app: redis
+        pod-template-hash: 57469d9c4d
+      name: redis-57469d9c4d
+      namespace: prod
+      ownerReferences:
+        - apiVersion: apps/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: Deployment
+          name: redis
+          uid: ea6a0b05-dd5d-4219-a567-e14156c9a6bb
+      resourceVersion: "165423"
+      uid: d9cdb3f6-6a5f-4467-a5b4-0ac262eea3c4
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: redis
+          pod-template-hash: 57469d9c4d
+      template:
+        metadata:
+          labels:
+            app: redis
+            pod-template-hash: 57469d9c4d
+        spec:
+          containers:
+            - image: redis:7
+              imagePullPolicy: IfNotPresent
+              name: redis
+              ports:
+                - containerPort: 6379
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 200m
+                  memory: 128Mi
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /data
+                  name: redis-data
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - emptyDir: {}
+              name: redis-data
+    status:
+      availableReplicas: 1
+      fullyLabeledReplicas: 1
+      observedGeneration: 1
+      readyReplicas: 1
+      replicas: 1
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"name":"mongodb","namespace":"prod"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"mongodb"}},"serviceName":"mongodb","template":{"metadata":{"labels":{"app":"mongodb"}},"spec":{"containers":[{"command":["mongod","--replSet","rs0","--bind_ip_all"],"image":"mongo:6.0","name":"mongodb","ports":[{"containerPort":27017}],"volumeMounts":[{"mountPath":"/data/db","name":"mongo-persistent-storage"}]}]}},"volumeClaimTemplates":[{"metadata":{"name":"mongo-persistent-storage"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"1Gi"}}}}]}}
+      creationTimestamp: "2025-11-03T12:17:02Z"
+      generation: 1
+      name: mongodb
+      namespace: prod
+      resourceVersion: "160602"
+      uid: 6ddc4ae8-8230-40a7-90f5-aa50261ae63e
+    spec:
+      persistentVolumeClaimRetentionPolicy:
+        whenDeleted: Retain
+        whenScaled: Retain
+      podManagementPolicy: OrderedReady
+      replicas: 3
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: mongodb
+      serviceName: mongodb
+      template:
+        metadata:
+          labels:
+            app: mongodb
+        spec:
+          containers:
+            - command:
+                - mongod
+                - --replSet
+                - rs0
+                - --bind_ip_all
+              image: mongo:6.0
+              imagePullPolicy: IfNotPresent
+              name: mongodb
+              ports:
+                - containerPort: 27017
+                  protocol: TCP
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /data/db
+                  name: mongo-persistent-storage
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+      updateStrategy:
+        rollingUpdate:
+          partition: 0
+        type: RollingUpdate
+      volumeClaimTemplates:
+        - apiVersion: v1
+          kind: PersistentVolumeClaim
+          metadata:
+            name: mongo-persistent-storage
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi
+            volumeMode: Filesystem
+          status:
+            phase: Pending
+    status:
+      availableReplicas: 3
+      collisionCount: 0
+      currentReplicas: 3
+      currentRevision: mongodb-ff68c9444
+      observedGeneration: 1
+      readyReplicas: 3
+      replicas: 3
+      updateRevision: mongodb-ff68c9444
+      updatedReplicas: 3
+  - apiVersion: batch/v1
+    kind: CronJob
+    metadata:
+      creationTimestamp: "2025-10-13T20:24:40Z"
+      generation: 9
+      name: auto-sync-snack
+      namespace: prod
+      resourceVersion: "172636"
+      uid: 9ccac123-046c-49ce-8016-d076e728c389
+    spec:
+      concurrencyPolicy: Allow
+      failedJobsHistoryLimit: 1
+      jobTemplate:
+        metadata: {}
+        spec:
+          backoffLimit: 0
+          template:
+            metadata: {}
+            spec:
+              containers:
+                - args:
+                    - |
+                      set -euo pipefail
+                      /bin/sh /scripts/run.sh
+                  command:
+                    - /bin/sh
+                    - -c
+                  env:
+                    - name: NAMESPACE
+                      value: prod
+                    - name: DEPLOYMENT
+                      value: projet2025
+                  image: bitnami/kubectl:latest
+                  imagePullPolicy: IfNotPresent
+                  name: auto-sync
+                  resources: {}
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+                  volumeMounts:
+                    - mountPath: /scripts
+                      name: scripts
+                      readOnly: true
+              dnsPolicy: ClusterFirst
+              restartPolicy: Never
+              schedulerName: default-scheduler
+              securityContext: {}
+              serviceAccount: image-sync
+              serviceAccountName: image-sync
+              terminationGracePeriodSeconds: 30
+              volumes:
+                - configMap:
+                    defaultMode: 420
+                    name: auto-sync-script
+                  name: scripts
+          ttlSecondsAfterFinished: 600
+      schedule: "*/5 * * * *"
+      successfulJobsHistoryLimit: 1
+      suspend: false
+    status:
+      lastScheduleTime: "2025-11-03T14:00:00Z"
+      lastSuccessfulTime: "2025-11-03T14:00:30Z"
+  - apiVersion: batch/v1
+    kind: Job
+    metadata:
+      annotations:
+        batch.kubernetes.io/cronjob-scheduled-timestamp: "2025-11-03T14:00:00Z"
+      creationTimestamp: "2025-11-03T14:00:00Z"
+      generation: 1
+      labels:
+        batch.kubernetes.io/controller-uid: 5b8d29e7-d307-43bb-936b-a47277408386
+        batch.kubernetes.io/job-name: auto-sync-snack-29369640
+        controller-uid: 5b8d29e7-d307-43bb-936b-a47277408386
+        job-name: auto-sync-snack-29369640
+      name: auto-sync-snack-29369640
+      namespace: prod
+      ownerReferences:
+        - apiVersion: batch/v1
+          blockOwnerDeletion: true
+          controller: true
+          kind: CronJob
+          name: auto-sync-snack
+          uid: 9ccac123-046c-49ce-8016-d076e728c389
+      resourceVersion: "172633"
+      uid: 5b8d29e7-d307-43bb-936b-a47277408386
+    spec:
+      backoffLimit: 0
+      completionMode: NonIndexed
+      completions: 1
+      manualSelector: false
+      parallelism: 1
+      podReplacementPolicy: TerminatingOrFailed
+      selector:
+        matchLabels:
+          batch.kubernetes.io/controller-uid: 5b8d29e7-d307-43bb-936b-a47277408386
+      suspend: false
+      template:
+        metadata:
+          labels:
+            batch.kubernetes.io/controller-uid: 5b8d29e7-d307-43bb-936b-a47277408386
+            batch.kubernetes.io/job-name: auto-sync-snack-29369640
+            controller-uid: 5b8d29e7-d307-43bb-936b-a47277408386
+            job-name: auto-sync-snack-29369640
+        spec:
+          containers:
+            - args:
+                - |
+                  set -euo pipefail
+                  /bin/sh /scripts/run.sh
+              command:
+                - /bin/sh
+                - -c
+              env:
+                - name: NAMESPACE
+                  value: prod
+                - name: DEPLOYMENT
+                  value: projet2025
+              image: bitnami/kubectl:latest
+              imagePullPolicy: IfNotPresent
+              name: auto-sync
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /scripts
+                  name: scripts
+                  readOnly: true
+          dnsPolicy: ClusterFirst
+          restartPolicy: Never
+          schedulerName: default-scheduler
+          securityContext: {}
+          serviceAccount: image-sync
+          serviceAccountName: image-sync
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - configMap:
+                defaultMode: 420
+                name: auto-sync-script
+              name: scripts
+      ttlSecondsAfterFinished: 600
+    status:
+      completionTime: "2025-11-03T14:00:30Z"
+      conditions:
+        - lastProbeTime: "2025-11-03T14:00:30Z"
+          lastTransitionTime: "2025-11-03T14:00:30Z"
+          message: Reached expected number of succeeded pods
+          reason: CompletionsReached
+          status: "True"
+          type: SuccessCriteriaMet
+        - lastProbeTime: "2025-11-03T14:00:30Z"
+          lastTransitionTime: "2025-11-03T14:00:30Z"
+          message: Reached expected number of succeeded pods
+          reason: CompletionsReached
+          status: "True"
+          type: Complete
+      ready: 0
+      startTime: "2025-11-03T14:00:00Z"
+      succeeded: 1
+      terminating: 0
+      uncountedTerminatedPods: {}
+  - apiVersion: v1
+    data:
+      run.sh:
+        "#!/bin/sh\nset -eu\nNAMESPACE=\"${NAMESPACE:-prod}\"\nDEPLOYMENT=\"${DEPLOYMENT:-projet2025}\"\n\necho
+        \"\U0001F501 Rollout restart du déploiement $DEPLOYMENT dans $NAMESPACE\"\nkubectl
+        -n \"$NAMESPACE\" rollout restart \"deployment/$DEPLOYMENT\"\n\necho \"⏳ Attente
+        de la fin du rollout…\"\nkubectl -n \"$NAMESPACE\" rollout status \"deployment/$DEPLOYMENT\"
+        --timeout=5m\n\necho \"✅ Terminé.\"\n"
+    kind: ConfigMap
+    metadata:
+      creationTimestamp: "2025-10-13T22:36:19Z"
+      name: auto-sync-script
+      namespace: prod
+      resourceVersion: "88514"
+      uid: 1cd7e2af-a9ad-466d-af5f-1e8cade98a96
+  - apiVersion: v1
+    data:
+      ca.crt: |
+        -----BEGIN CERTIFICATE-----
+        MIIDBzCCAe+gAwIBAgIIRL9rQIYCo5owDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE
+        AxMKa3ViZXJuZXRlczAgFw0yNTEwMDExNDI2MzBaGA8yMTI1MDkwNzE0MzEzMFow
+        FTETMBEGA1UEAxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+        AQoCggEBAJjWgvwdHHZmes4x5LwDcl6d34G0gVAtvLF1mkVcXZjDVKHPYWS/Orbt
+        sRb93aWxMX/+Z/ApEqBT9IMPe3o04F/9gqIpN6OkrjL0U43cHPr6dqgelD50ZAJj
+        rokA7Jx0tPhU107Q1CSsyZe8lyzgLBIwflKl6onqNq9T5ydXbyFPWIuP0uK3vh/k
+        9R6UYPDX2ze6vYFGsSyJ+zS2mNDt2pSel4BwniS6pBS95u8AAo7IewxIdosQ+mPx
+        Fd+biz1kLjwz8ahs8vMhnup7leCoqgfBvUDjGqWyaShqLERAkvWgzkLt/LloOlVk
+        VlRdxXenHLQBJ2oN3O0Xoft3xCyNVqECAwEAAaNZMFcwDgYDVR0PAQH/BAQDAgKk
+        MA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFFAphPqpXbzArlKaOUeq1LZQ0UUL
+        MBUGA1UdEQQOMAyCCmt1YmVybmV0ZXMwDQYJKoZIhvcNAQELBQADggEBAIlrDbdw
+        cwgpoxyj4Z0SU0eDRSI7IKAPztXyj3DBXyMi+nXPFJK0+agA00Aa3FTLh/tuG8hP
+        jDX+dEIEvflBzRJonSJbzbjY3uS43mP8e8eYLnrdUAMLV2XzhARBZwFFrO52Be4D
+        DJ9LRU3nmSyZhCrtv08zqqtjcnsU0wz7bhGJKozjvOJVIxInE7woGpvKKuylKSRy
+        Ht3MNhYl8GVbxjeva+0NYpL3Qee+qOY14hI0jvxc0HJZaDaOX/+GBzLLl5Z+Ccmx
+        KQN2vBU2gz0soZOoe0nE0XBq7BKNorky+LwQPNoPEpvrZo3j1qvGArx2cJm4kXSD
+        nxA5+8CIOnCiRtA=
+        -----END CERTIFICATE-----
+    kind: ConfigMap
+    metadata:
+      annotations:
+        kubernetes.io/description:
+          Contains a CA bundle that can be used to verify the
+          kube-apiserver when using internal endpoints such as the internal service
+          IP or kubernetes.default.svc. No other usage is guaranteed across distributions
+          of Kubernetes clusters.
+      creationTimestamp: "2025-10-08T12:27:37Z"
+      name: kube-root-ca.crt
+      namespace: prod
+      resourceVersion: "35620"
+      uid: 6581ced1-c227-440e-b294-340ffc9b71e5
+kind: List
+metadata:
+  resourceVersion: ""

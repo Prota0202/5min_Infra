@@ -66,18 +66,26 @@ def api_score():
     data = request.get_json()
     nom = data.get("nom")
     score = data.get("score")
+    
     if nom and score is not None:
+        # 1️⃣ Mise à jour MongoDB
         collection.update_one(
             {"nom": nom},
             {"$set": {"score": score}},
             upsert=True
         )
-       # Mise à jour du cache Redis immédiatement 
-        redis_client.set(nom, score) # Pas de TTL, écriture immédiate 
-        # Retourner le score mis à jour depuis Redis pour confirmation 
-        cached_score = redis_client.get(nom) 
-        return jsonify({"ok": True, "score": int(cached_score)})
+
+        # 2️⃣ Récupérer tous les scores mis à jour
+        all_scores = collection.find()
+        scores_list = [{"nom": s.get("nom", ""), "score": s.get("score", "")} for s in all_scores]
+
+        # 3️⃣ Mettre à jour le cache global "scores"
+        redis_client.setex("scores", 60, json.dumps(scores_list))  # expire après 60 secondes
+
+        return jsonify({"ok": True, "message": "Score mis à jour", "scores": scores_list})
+    
     return jsonify({"ok": False, "error": "Missing nom or score"}), 400
+
 
 @app.get("/whoami")
 def whoami():

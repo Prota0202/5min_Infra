@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: projet2025
+  namespace: prod
+spec:
+  selector:
+    app: projet2025
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
