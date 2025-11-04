@@ -78,7 +78,7 @@ def api_score():
             upsert=True
         )
 
-        # 2️⃣ Récupérer tous les scores mis à jour
+        # Récupérer tous les scores mis à jour
         all_scores = collection.find()
         scores_list = [{"nom": s.get("nom", ""), "score": s.get("score", "")} for s in all_scores]
 
