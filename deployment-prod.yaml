@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: projet2025
-  namespace: test
+  namespace: prod
   labels: { app: projet2025 }
 spec:
   replicas: 3
@@ -17,12 +17,12 @@ spec:
     spec:
       containers:
         - name: projet2025
-          image: projet2025:test
+          image: docker.io/haitamleb/projet2025:main
           imagePullPolicy: IfNotPresent
           ports: [{ containerPort: 8000 }]
           env:
             - name: REDIS_NAMESPACE
-              value: "test"
+              value: "prod"
           readinessProbe:
             httpGet: { path: /, port: 8000 }
             initialDelaySeconds: 5

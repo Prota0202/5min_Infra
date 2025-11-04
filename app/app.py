@@ -27,8 +27,11 @@ client = MongoClient(MONGO_URI)
 db = client["projet2025"]
 collection = db["scores"]
 
+REDIS_NAMESPACE = os.getenv("REDIS_NAMESPACE", "test")
+redis_client = redis.Redis(host=f"redis.{REDIS_NAMESPACE}.svc.cluster.local", port=6379, db=0)
+
 # Redis cache
-redis_client = redis.Redis(host="redis.test.svc.cluster.local", port=6379, db=0)
+#redis_client = redis.Redis(host="redis.test.svc.cluster.local", port=6379, db=0)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
