@@ -1,7 +1,3 @@
-# 5MIN_Infra
-
-projet 5 min M.Lurkin
-
 ### 1. Onboarding Guide for New Developers
 
 Ce guide explique comment configurer l'environnement de développement local à l'aide de `docker-compose.yml` pour lancer les services `web` et `mongodb`.
