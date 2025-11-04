@@ -59,7 +59,7 @@ def scores():
     else:
         # Charger depuis MongoDB et mettre à jour le cache
         all_scores = collection.find()
-        scores_list = [{"nom": score.get("nom", ""), "score": score.get("score", "")} for score in all_scores]
+        scores_list = [{"nom": score.get("nom", ""), "score": score.get("score", ""), "date": score.get("date", "")} for score in all_scores]
         redis_client.setex("scores", 60, json.dumps(scores_list))  # cache 60 secondes
 
     return render_template("scores.html", scores=scores_list)

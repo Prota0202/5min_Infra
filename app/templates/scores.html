@@ -7,7 +7,7 @@
     <h1>Scores</h1>
     <ul>
       {% for score in scores %}
-      <li>{{ score.nom }} : {{ score.score }}</li>
+      <li>{{ score.nom }} : {{ score.score }} ({{ score.date }})</li>
       {% endfor %}
     </ul>
 
